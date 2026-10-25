@@ -5,12 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>مبادرة دقيقة بلغتي الفصيحة | أ. عادل علي الصيعري</title>
     
-    <!-- PWA & App Styling -->
+    <!-- ربط ملفات PWA للتثبيت على الهواتف -->
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#002d38">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="دقيقة بلغتي">
+    <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/aliali1981/Ahfaz-W-Aktob/main/logo.png">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -275,6 +276,7 @@
             </div>
         </div>
 
+        <!-- زر التثبيت الذي سيظهر تلقائياً عندما يدعم المتصفح تثبيت التطبيق -->
         <button id="pwaInstallBtn" onclick="installPWA()"><i class="fas fa-download"></i> تثبيت التطبيق على الهاتف</button>
 
         <div class="nav-grid">
@@ -409,7 +411,7 @@
                 <video id="previewBox" height="200" style="display:none; width:100%; margin-top:15px; border-radius:15px; object-fit: cover;" controls></video>
                 <div class="progress-container" id="progCont"><div id="progressBar"></div></div>
                 <p id="upStatus" style="margin-top:10px; font-weight:bold; color: var(--primary)"></p>
-                <button id="finalUploadBtn" onclick="sendToFirebase()"><i class="fas fa-paper-plane"></i> إرسال المشاركة النهائية</button>
+                <button id="finalUploadBtn" onclick="sendToCloudinary()"><i class="fas fa-paper-plane"></i> إرسال المشاركة النهائية</button>
                 <input type="file" id="fIn" style="display:none" onchange="handleFileSelect()">
             </div>
         </div>
@@ -474,7 +476,28 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
     <script>
-        // قوائم طلاب الصفين الخامس (5-1, 5-2, 5-3) والسادس (6-1, 6-2) الرسمية
+        // برمجة تفعيل ظهور زر التثبيت تلقائياً على الهواتف
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            document.getElementById('pwaInstallBtn').style.display = 'block';
+        });
+
+        function installPWA() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        console.log('User accepted the install prompt');
+                    }
+                    deferredPrompt = null;
+                    document.getElementById('pwaInstallBtn').style.display = 'none';
+                });
+            }
+        }
+
+        // قوائم طلاب الصفين الخامس (5-1, 5-2, 5-3)[cite: 3, 4, 5] والسادس (6-1, 6-2) الرسمية
         const studentData = { 
             "5-1": [
                 "سهيل بن سالم بن محمد سعد خوار", "طلال بن مرشد بن بخيت عبد الله مسن", "أسامة محمد خليل ابراهيم", 
@@ -617,37 +640,58 @@
             }
         }
 
-        function sendToFirebase() {
+        function sendToCloudinary() {
             let cls = document.getElementById('cls').value;
             let stu = document.getElementById('stu').value;
             if(!cls || !stu) { alert("يرجى اختيار الصف واسم الطالب أولاً"); return; }
             if(!selectedFile) { alert("يرجى اختيار مقطع فيديو أولاً"); return; }
 
             document.getElementById('progCont').style.display = 'block';
-            document.getElementById('upStatus').innerText = 'جاري حفظ ورفع المشاركة المرئية...';
+            document.getElementById('upStatus').innerText = 'جاري رفع الفيديو إلى السحابة...';
 
-            let reader = new FileReader();
-            reader.onload = function(e) {
-                let base64Video = e.target.result;
-                let key = cls + "_" + stu.replace(/[\.\#\$\[\]]/g, "_");
-                
-                db.ref('submissions_fasaha/' + key).update({
-                    cls: cls,
-                    stu: stu,
-                    video: base64Video,
-                    type: 'oral',
-                    timestamp: new Date().toISOString()
-                }, err => {
-                    if(err) {
-                        alert("حدث خطأ في الحفظ: " + err.message);
-                    } else {
-                        showToast("تم إرسال دقيقتك الفصيحة بنجاح!");
-                        document.getElementById('upStatus').innerText = 'تم التسليم بنجاح!';
-                        document.getElementById('finalUploadBtn').style.display = 'none';
-                    }
-                });
-            };
-            reader.readAsDataURL(selectedFile);
+            let formData = new FormData();
+            formData.append("file", selectedFile);
+            formData.append("upload_preset", "fasaha_preset");
+
+            let cloudName = "duhzhaxxc"; // حسابك على Cloudinary[cite: 6]
+            let uploadUrl = `https://api.cloudinary.com/v1_1/${cloudName}/video/upload`;
+
+            fetch(uploadUrl, {
+                method: "POST",
+                body: formData
+            })
+            .then(res => res.json())
+            .then(data => {
+                if(data.secure_url) {
+                    let videoUrl = data.secure_url;
+                    let key = cls + "_" + stu.replace(/[\.\#\$\[\]]/g, "_");
+                    
+                    db.ref('submissions_fasaha/' + key).update({
+                        cls: cls,
+                        stu: stu,
+                        video: videoUrl,
+                        type: 'oral',
+                        timestamp: new Date().toISOString()
+                    }, err => {
+                        if(err) {
+                            alert("حدث خطأ في الحفظ: " + err.message);
+                            document.getElementById('progCont').style.display = 'none';
+                        } else {
+                            showToast("تم إرسال دقيقتك الفصيحة بنجاح!");
+                            document.getElementById('upStatus').innerText = 'تم التسليم بنجاح!';
+                            document.getElementById('finalUploadBtn').style.display = 'none';
+                        }
+                    });
+                } else {
+                    alert("فشل رفع الفيديو، تأكد من اتصال الإنترنت أو حجم الملف.");
+                    document.getElementById('progCont').style.display = 'none';
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                alert("حدث خطأ أثناء الرفع.");
+                document.getElementById('progCont').style.display = 'none';
+            });
         }
 
         function updateUI() {
