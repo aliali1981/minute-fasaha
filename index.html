@@ -5,13 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>مبادرة دقيقة بلغتي الفصيحة | أ. عادل علي الصيعري</title>
     
-    <!-- ربط ملفات PWA للتثبيت على الهواتف -->
+    <!-- ربط ملفات PWA للتثبيت على الهواتف مع الشعار الاحترافي الجديد -->
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#002d38">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="دقيقة بلغتي">
-    <link rel="apple-touch-icon" href="https://placehold.co/192x192/002d38/c5a021?text=فصيحة">
+    <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/aliali1981/minute-fasaha/0c4e31795a3bb044d3a047b9a9b327d3682fb968/logo.png">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -88,8 +88,12 @@
             box-shadow: 0 0 25px rgba(197, 160, 33, 0.4); 
             margin-bottom: 20px; 
             position: relative; 
-            color: var(--primary);
-            font-size: 3.5rem;
+            overflow: hidden; 
+        }
+        .logo-circle img { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
         }
 
         .main-title { color: #fff; font-size: 2.1rem; font-weight: 900; margin-bottom: 6px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); text-align: center; }
@@ -260,9 +264,9 @@
 
     <!-- الواجهة الرئيسية -->
     <div id="mainMenu">
-        <!-- شاشة ترحيب وأيقونة مناسبة لاسم المبادرة (ميكروفون التحدث بالفصحى) -->
+        <!-- عرض الشعار الاحترافي الجديد المباشر -->
         <div class="logo-circle">
-            <i class="fas fa-microphone-alt" style="color: var(--primary);"></i>
+            <img src="https://raw.githubusercontent.com/aliali1981/minute-fasaha/0c4e31795a3bb044d3a047b9a9b327d3682fb968/logo.png" alt="شعار مبادرة دقيقة بلغتي الفصيحة">
         </div>
         <div class="main-title">مبادرة دقيقة بلغتي الفصيحة</div>
         <div class="school-info">«بالفصحى نلتقي.. وبجمال البيان نرتتقي»</div>
@@ -497,7 +501,7 @@
             }
         }
 
-        // قوائم طلاب الصفين الخامس (5-1, 5-2, 5-3)[cite: 3, 4, 5] والسادس (6-1, 6-2) الرسمية
+        // قوائم طلاب الصفين الخامس والسادس الرسمية[cite: 3, 4]
         const studentData = { 
             "5-1": [
                 "سهيل بن سالم بن محمد سعد خوار", "طلال بن مرشد بن بخيت عبد الله مسن", "أسامة محمد خليل ابراهيم", 
@@ -653,7 +657,7 @@
             formData.append("file", selectedFile);
             formData.append("upload_preset", "fasaha_preset");
 
-            let cloudName = "duhzhaxxc"; // حسابك على Cloudinary[cite: 6]
+            let cloudName = "duhzhaxxc"; // حسابك على Cloudinary
             let uploadUrl = `https://api.cloudinary.com/v1_1/${cloudName}/video/upload`;
 
             fetch(uploadUrl, {
