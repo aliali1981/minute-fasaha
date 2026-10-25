@@ -1,0 +1,20 @@
+{
+  "name": "مبادرة دقيقة بلغتي الفصيحة",
+  "short_name": "دقيقة بلغتي",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#002d38",
+  "theme_color": "#002d38",
+  "icons": [
+    {
+      "src": "https://raw.githubusercontent.com/aliali1981/Ahfaz-W-Aktob/main/logo.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://raw.githubusercontent.com/aliali1981/Ahfaz-W-Aktob/main/logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
