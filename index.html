@@ -11,7 +11,7 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="دقيقة بلغتي">
-    <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/aliali1981/Ahfaz-W-Aktob/main/logo.png">
+    <link rel="apple-touch-icon" href="https://placehold.co/192x192/002d38/c5a021?text=فصيحة">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -77,8 +77,8 @@
         }
         
         .logo-circle { 
-            width: 130px; 
-            height: 130px; 
+            width: 140px; 
+            height: 140px; 
             background: white; 
             border-radius: 50%; 
             display: flex; 
@@ -86,7 +86,7 @@
             justify-content: center; 
             border: 4px solid var(--accent); 
             box-shadow: 0 0 25px rgba(197, 160, 33, 0.4); 
-            margin-bottom: 15px; 
+            margin-bottom: 20px; 
             position: relative; 
             color: var(--primary);
             font-size: 3.5rem;
@@ -260,8 +260,9 @@
 
     <!-- الواجهة الرئيسية -->
     <div id="mainMenu">
+        <!-- شاشة ترحيب وأيقونة مناسبة لاسم المبادرة (ميكروفون التحدث بالفصحى) -->
         <div class="logo-circle">
-            <i class="fas fa-microphone-alt"></i>
+            <i class="fas fa-microphone-alt" style="color: var(--primary);"></i>
         </div>
         <div class="main-title">مبادرة دقيقة بلغتي الفصيحة</div>
         <div class="school-info">«بالفصحى نلتقي.. وبجمال البيان نرتتقي»</div>
@@ -276,7 +277,6 @@
             </div>
         </div>
 
-        <!-- زر التثبيت الذي سيظهر تلقائياً عندما يدعم المتصفح تثبيت التطبيق -->
         <button id="pwaInstallBtn" onclick="installPWA()"><i class="fas fa-download"></i> تثبيت التطبيق على الهاتف</button>
 
         <div class="nav-grid">
@@ -476,7 +476,7 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
     <script>
-        // برمجة تفعيل ظهور زر التثبيت تلقائياً على الهواتف
+        // زر التثبيت التلقائي PWA
         let deferredPrompt;
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
