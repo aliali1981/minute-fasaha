@@ -28,9 +28,7 @@
             --shadow: 0 10px 25px rgba(0,0,0,0.1);
         }
 
-        * {
-            box-sizing: border-box;
-        }
+        * { box-sizing: border-box; }
 
         body { 
             font-family: 'Tajawal', sans-serif; 
@@ -90,55 +88,29 @@
             position: relative; 
             overflow: hidden; 
         }
-        .logo-circle img { 
-            width: 100%; 
-            height: 100%; 
-            object-fit: cover; 
-        }
+        .logo-circle img { width: 100%; height: 100%; object-fit: cover; }
 
         .main-title { color: #fff; font-size: 2.1rem; font-weight: 900; margin-bottom: 6px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); text-align: center; }
         .school-info { color: var(--accent); font-weight: 700; font-size: 1.05rem; margin-bottom: 20px; text-align: center; letter-spacing: 0.5px; }
 
         .overall-progress-card {
-            width: 100%; 
-            max-width: 500px; 
+            width: 100%; max-width: 500px; 
             background: rgba(255, 255, 255, 0.1);
             border: 1px solid rgba(197, 160, 33, 0.4); 
             border-radius: 15px;
-            padding: 15px 20px; 
-            color: white; 
-            margin-bottom: 20px; 
-            text-align: center; 
-            box-sizing: border-box;
+            padding: 15px 20px; color: white; margin-bottom: 20px; text-align: center; box-sizing: border-box;
         }
         .overall-progress-bar {
-            width: 100%; 
-            height: 12px; 
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 10px; 
-            overflow: hidden; 
-            margin-top: 10px;
+            width: 100%; height: 12px; background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px; overflow: hidden; margin-top: 10px;
         }
-        .overall-progress-fill {
-            height: 100%; 
-            width: 0%; 
-            background: var(--accent); 
-            transition: width 0.5s ease;
-        }
+        .overall-progress-fill { height: 100%; width: 0%; background: var(--accent); transition: width 0.5s ease; }
 
         #pwaInstallBtn {
-            display: none; 
-            background: var(--accent); 
-            color: var(--primary);
-            padding: 12px 25px; 
-            border-radius: 30px; 
-            border: none;
-            font-weight: 900; 
-            font-family: 'Tajawal'; 
-            font-size: 0.95rem;
-            margin-bottom: 25px; 
-            cursor: pointer; 
-            box-shadow: 0 4px 15px rgba(197, 160, 33, 0.4);
+            display: none; background: var(--accent); color: var(--primary);
+            padding: 12px 25px; border-radius: 30px; border: none;
+            font-weight: 900; font-family: 'Tajawal'; font-size: 0.95rem;
+            margin-bottom: 25px; cursor: pointer; box-shadow: 0 4px 15px rgba(197, 160, 33, 0.4);
             animation: pulse 2s infinite;
         }
         @keyframes pulse {
@@ -147,29 +119,23 @@
             100% { transform: scale(1); }
         }
 
-        .nav-grid { 
-            display: grid; 
-            grid-template-columns: repeat(2, 1fr); 
-            gap: 15px; 
-            width: 100%; 
-            max-width: 500px; 
-        }
+        .nav-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; width: 100%; max-width: 500px; }
         .menu-btn { 
-            background: rgba(255,255,255,0.08); 
-            color: #fff; 
-            padding: 18px 10px; 
-            border-radius: 20px; 
-            text-align: center; 
-            cursor: pointer; 
-            border: 1px solid rgba(255,255,255,0.15); 
-            transition: all 0.3s ease; 
+            background: rgba(255,255,255,0.08); color: #fff; padding: 18px 10px; 
+            border-radius: 20px; text-align: center; cursor: pointer; 
+            border: 1px solid rgba(255,255,255,0.15); transition: all 0.3s ease; 
         }
         .menu-btn i { font-size: 1.8rem; margin-bottom: 8px; display: block; color: var(--accent); }
         .menu-btn span { font-size: 0.9rem; font-weight: bold; }
         .menu-btn:hover { background: rgba(255,255,255,0.2); transform: translateY(-3px); }
 
         #contentArea { display: none; padding: 20px; padding-bottom: 150px; min-height: 100vh; box-sizing: border-box; }
-        .back-nav { background: var(--primary); color: var(--accent); padding: 15px; border-radius: 12px; border: none; font-weight: 900; cursor: pointer; margin-bottom: 20px; width: 100%; font-size: 1rem; display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: var(--shadow); font-family: 'Tajawal'; }
+        .back-nav { 
+            background: var(--primary); color: var(--accent); padding: 15px; border-radius: 12px; 
+            border: none; font-weight: 900; cursor: pointer; margin-bottom: 20px; width: 100%; 
+            font-size: 1rem; display: flex; align-items: center; justify-content: center; gap: 10px; 
+            box-shadow: var(--shadow); font-family: 'Tajawal'; 
+        }
 
         .info-card { background: white; padding: 20px; border-radius: 20px; margin-bottom: 15px; border-right: 6px solid var(--accent); box-shadow: var(--shadow); }
         .info-card h3 { color: var(--primary); margin: 0 0 15px 0; display: flex; align-items: center; gap: 10px; background: #fdf8e6; padding: 10px; border-radius: 10px; font-size: 1.1rem; }
@@ -177,43 +143,13 @@
         .info-list li { margin-bottom: 12px; display: flex; align-items: flex-start; gap: 12px; line-height: 1.6; font-size: 0.95rem; }
         .info-list i { color: var(--accent); font-size: 1.1rem; margin-top: 4px; }
 
-        .topic-box {
-            background: #fcfcfc;
-            border: 1px solid #e2e8f0;
-            border-radius: 15px;
-            padding: 15px;
-            margin-bottom: 15px;
-        }
-        .topic-box h4 {
-            margin: 0 0 8px 0;
-            color: var(--primary);
-            font-size: 1.05rem;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .topic-box p {
-            margin: 0;
-            color: #555;
-            font-size: 0.9rem;
-            line-height: 1.6;
-        }
+        .topic-box { background: #fcfcfc; border: 1px solid #e2e8f0; border-radius: 15px; padding: 15px; margin-bottom: 15px; }
+        .topic-box h4 { margin: 0 0 8px 0; color: var(--primary); font-size: 1.05rem; display: flex; align-items: center; gap: 8px; }
+        .topic-box p { margin: 0; color: #555; font-size: 0.9rem; line-height: 1.6; }
 
-        .rubric-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 10px;
-            font-size: 0.85rem;
-        }
-        .rubric-table th, .rubric-table td {
-            border: 1px solid #ddd;
-            padding: 10px;
-            text-align: right;
-        }
-        .rubric-table th {
-            background: var(--primary);
-            color: white;
-        }
+        .rubric-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.85rem; }
+        .rubric-table th, .rubric-table td { border: 1px solid #ddd; padding: 10px; text-align: right; }
+        .rubric-table th { background: var(--primary); color: white; }
 
         .admin-header { background: white; padding: 20px; border-radius: 20px; box-shadow: var(--shadow); margin-bottom: 25px; border-top: 5px solid var(--accent); }
 
@@ -230,9 +166,16 @@
 
         .student-row { background: white; padding: 18px; border-radius: 20px; margin-bottom: 15px; box-shadow: var(--shadow); border-right: 8px solid #ddd; }
         .student-row.sent { border-right-color: var(--success); }
-        .action-btns { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 12px; }
-        .btn-act { padding: 10px 5px; border-radius: 10px; border: none; font-family: 'Tajawal'; font-size: 0.8rem; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 5px; }
-        .btn-view { background: #eef2ff; color: var(--info); grid-column: span 3; }
+        .btn-act { padding: 8px 12px; border-radius: 8px; border: none; font-family: 'Tajawal'; font-size: 0.85rem; font-weight: bold; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; }
+        .btn-view { background: #eef2ff; color: var(--info); }
+
+        /* تنسيق جداول لوحة الشرف الاحترافية */
+        .honor-class-card { background: white; border-radius: 20px; padding: 20px; margin-bottom: 20px; box-shadow: var(--shadow); border-top: 5px solid var(--accent); }
+        .honor-class-title { color: var(--primary); font-size: 1.2rem; font-weight: 900; margin-bottom: 12px; display: flex; align-items: center; gap: 10px; border-bottom: 2px solid #f4f7f6; padding-bottom: 8px; }
+        .honor-table { width: 100%; border-collapse: collapse; margin-top: 5px; font-size: 0.9rem; }
+        .honor-table th, .honor-table td { border: 1px solid #eee; padding: 12px; text-align: right; }
+        .honor-table th { background: var(--primary); color: white; font-weight: 700; }
+        .honor-table tr:nth-child(even) { background-color: #fafbfc; }
 
         #toast {
             visibility: hidden; min-width: 250px; background-color: var(--primary); color: #fff;
@@ -264,7 +207,6 @@
 
     <!-- الواجهة الرئيسية -->
     <div id="mainMenu">
-        <!-- عرض الشعار الاحترافي الجديد المباشر -->
         <div class="logo-circle">
             <img src="https://raw.githubusercontent.com/aliali1981/minute-fasaha/0c4e31795a3bb044d3a047b9a9b327d3682fb968/logo.png" alt="شعار مبادرة دقيقة بلغتي الفصيحة">
         </div>
@@ -448,12 +390,10 @@
             <div id="admList"></div>
         </div>
 
-        <!-- لوحة الشرف -->
+        <!-- لوحة الشرف (منظمة بجداول لكل صف) -->
         <div id="honorSec" class="section" style="display:none">
-            <div class="info-card" style="border-right-color: var(--success); background: #f9fffb;">
-                <h3 style="color:var(--success);"><i class="fas fa-video"></i> لوحة شرف المتحدثين (المشاركات المرئية)</h3>
-                <div id="hListOral" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(130px, 1fr)); gap:10px; margin-top:10px;"></div>
-            </div>
+            <h3 style="color:var(--primary); margin-bottom:15px; text-align:center;"><i class="fas fa-medal" style="color:var(--accent)"></i> لوحة شرف المبدعين والمشاركين</h3>
+            <div id="honorTablesContainer"></div>
         </div>
 
         <!-- فرسان الفصحى والمتميزين -->
@@ -480,7 +420,6 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
     <script>
-        // زر التثبيت التلقائي PWA
         let deferredPrompt;
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
@@ -556,7 +495,7 @@
                 "سهيل بن معمر بن سهيل مسلم جداد الكثيري", "صالح يحيى مسلم", "صقر بن محمد بن العبد سهيل جداد", 
                 "عبد الرحمن أيمن هشام سقاو نايل", "عبد الرحمن بن علي بن سهيل علي زوله", "عبد الرحمن سامي محمد احمد يوسف المزين", 
                 "عمار بن ياسر بن مبروك احمد مسن", "محمد بن بخيت بن احمد محمد مسن", "محمد بن سالم بن سهيل مطر جداد", 
-                "محمد بن عامر بن محمد احمد المسهلي", "محمد بن غازي بن كفيش جعيد جداد الكثيري", "محمد بن فهد بن سالم خويتم مسن", 
+                "محمد بن عامر بن محمد احمد المسهلي", "محمد بن غازي بن كفيش جعيد جعيد الكثيري", "محمد بن فهد بن سالم خويتم مسن", 
                 "مسلم بن بخيت بن عبدي بخيت خوار", "همدان بن احمد بن عبدالله محمد جداد", "هيثم بن فواز بن سليمان عبد الله الهاشمي", 
                 "يوسف بن عبد الله بن علي عبيد الشحي"
             ]
@@ -657,13 +596,10 @@
             formData.append("file", selectedFile);
             formData.append("upload_preset", "fasaha_preset");
 
-            let cloudName = "duhzhaxxc"; // حسابك على Cloudinary
+            let cloudName = "duhzhaxxc"; 
             let uploadUrl = `https://api.cloudinary.com/v1_1/${cloudName}/video/upload`;
 
-            fetch(uploadUrl, {
-                method: "POST",
-                body: formData
-            })
+            fetch(uploadUrl, { method: "POST", body: formData })
             .then(res => res.json())
             .then(data => {
                 if(data.secure_url) {
@@ -707,18 +643,60 @@
             document.getElementById('homePercText').innerText = perc + "%";
             document.getElementById('homePercFill').style.width = perc + "%";
 
-            let hOral = document.getElementById('hListOral');
-            hOral.innerHTML = '';
+            // بناء جداول لوحة الشرف مقسمة حسب الصفوف
+            let container = document.getElementById('honorTablesContainer');
+            container.innerHTML = '';
 
-            Object.keys(subs).forEach(k => {
-                let s = subs[k];
-                if(s.video) {
-                    hOral.innerHTML += `<div style="background:#fff; padding:10px; border-radius:12px; border:1px solid #eee; text-align:center; font-size:0.85rem; font-weight:bold;">
-                        <i class="fas fa-user-circle" style="color:var(--accent); font-size:1.2rem; display:block; margin-bottom:5px;"></i>
-                        ${s.stu}
-                    </div>`;
+            let hasAnySubmission = false;
+
+            Object.keys(studentData).forEach(clsKey => {
+                // تجميع الطلاب المرسلين لهذا الصف فقط
+                let sentStudentsInClass = [];
+                studentData[clsKey].forEach(sName => {
+                    let key = clsKey + "_" + sName.replace(/[\.\#\$\[\]]/g, "_");
+                    if(subs[key] && subs[key].video) {
+                        sentStudentsInClass.push({ name: sName, video: subs[key].video });
+                    }
+                });
+
+                if(sentStudentsInClass.length > 0) {
+                    hasAnySubmission = true;
+                    let rowsHtml = '';
+                    sentStudentsInClass.forEach((item, index) => {
+                        rowsHtml += `
+                            <tr>
+                                <td style="width: 60px; text-align: center; font-weight: bold;">${index + 1}</td>
+                                <td><b>${item.name}</b></td>
+                                <td style="width: 150px; text-align: center;">
+                                    <button class="btn-act btn-view" onclick="playModalVideo('${item.video}')"><i class="fas fa-play-circle"></i> عرض المشاركة</button>
+                                </td>
+                            </tr>
+                        `;
+                    });
+
+                    container.innerHTML += `
+                        <div class="honor-class-card">
+                            <div class="honor-class-title"><i class="fas fa-graduation-cap" style="color:var(--accent)"></i> صف (${clsKey})</div>
+                            <table class="honor-table">
+                               <thead>
+                                   <tr>
+                                       <th style="width: 60px; text-align: center;">#</th>
+                                       <th>اسم الطالب</th>
+                                       <th style="width: 150px; text-align: center;">المقطع المرئي</th>
+                                   </tr>
+                               </thead>
+                               <tbody>
+                                   ${rowsHtml}
+                               </tbody>
+                            </table>
+                        </div>
+                    `;
                 }
             });
+
+            if(!hasAnySubmission) {
+                container.innerHTML = `<div class="info-card" style="text-align:center; color:#777;"><i class="fas fa-info-circle"></i> لم يتم رصد أي مشاركات مرئية حتى الآن.</div>`;
+            }
         }
 
         function renderAdmin() {
@@ -749,7 +727,7 @@
                                         ${isSent ? 'مشارك' : 'غير مشارك'}
                                     </span>
                                 </div>
-                                ${sub && sub.video ? `<button class="btn-act btn-view" onclick="playModalVideo('${sub.video}')"><i class="fas fa-play"></i> عرض الدقيقة المرئية</button>` : ''}
+                                ${sub && sub.video ? `<div style="margin-top:10px;"><button class="btn-act btn-view" onclick="playModalVideo('${sub.video}')"><i class="fas fa-play"></i> عرض الدقيقة المرئية</button></div>` : ''}
                             </div>
                         `;
                     });
