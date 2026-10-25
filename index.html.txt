@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>مبادرة دقيقة بلغتي الفصيحة | أ. عادل علي الصيعري</title>
+    
+    <!-- PWA & App Styling -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#002d38">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="دقيقة بلغتي">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap');
+        
+        :root {
+            --primary: #002d38; 
+            --accent: #c5a021;  
+            --bg: #f4f7f6;      
+            --white: #ffffff;
+            --success: #27ae60;
+            --danger: #e74c3c;
+            --info: #3498db;
+            --shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body { 
+            font-family: 'Tajawal', sans-serif; 
+            margin: 0; 
+            background: var(--bg); 
+            color: #333; 
+            text-align: right; 
+            overflow-x: hidden; 
+        }
+
+        /* الشريط السفلي الثابت يضم مقدم المبادرة فقط */
+        .universal-footer {
+            position: fixed; 
+            bottom: 20px; 
+            left: 5%; 
+            width: 90%; 
+            background: rgba(0, 45, 56, 0.95); 
+            backdrop-filter: blur(15px);
+            border-radius: 20px; 
+            padding: 12px; 
+            border: 1px solid rgba(197, 160, 33, 0.5);
+            display: flex; 
+            justify-content: center; 
+            align-items: center;
+            z-index: 9999; 
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+            box-sizing: border-box;
+        }
+        .f-item { text-align: center; color: white; }
+        .f-item i { color: var(--accent); font-size: 1.4rem; margin-bottom: 4px; display: block; }
+        .f-item span { font-size: 0.8rem; opacity: 0.85; font-weight: bold; }
+        .f-item b { display: block; font-size: 1.05rem; margin-top: 2px; color: #fff; }
+
+        #mainMenu { 
+            width: 100%; 
+            min-height: 100vh; 
+            background: var(--primary); 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            padding: 40px 15px 150px 15px; 
+            position: relative; 
+            box-sizing: border-box; 
+        }
+        
+        .logo-circle { 
+            width: 130px; 
+            height: 130px; 
+            background: white; 
+            border-radius: 50%; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            border: 4px solid var(--accent); 
+            box-shadow: 0 0 25px rgba(197, 160, 33, 0.4); 
+            margin-bottom: 15px; 
+            position: relative; 
+            color: var(--primary);
+            font-size: 3.5rem;
+        }
+
+        .main-title { color: #fff; font-size: 2.1rem; font-weight: 900; margin-bottom: 6px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); text-align: center; }
+        .school-info { color: var(--accent); font-weight: 700; font-size: 1.05rem; margin-bottom: 20px; text-align: center; letter-spacing: 0.5px; }
+
+        .overall-progress-card {
+            width: 100%; 
+            max-width: 500px; 
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(197, 160, 33, 0.4); 
+            border-radius: 15px;
+            padding: 15px 20px; 
+            color: white; 
+            margin-bottom: 20px; 
+            text-align: center; 
+            box-sizing: border-box;
+        }
+        .overall-progress-bar {
+            width: 100%; 
+            height: 12px; 
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px; 
+            overflow: hidden; 
+            margin-top: 10px;
+        }
+        .overall-progress-fill {
+            height: 100%; 
+            width: 0%; 
+            background: var(--accent); 
+            transition: width 0.5s ease;
+        }
+
+        #pwaInstallBtn {
+            display: none; 
+            background: var(--accent); 
+            color: var(--primary);
+            padding: 12px 25px; 
+            border-radius: 30px; 
+            border: none;
+            font-weight: 900; 
+            font-family: 'Tajawal'; 
+            font-size: 0.95rem;
+            margin-bottom: 25px; 
+            cursor: pointer; 
+            box-shadow: 0 4px 15px rgba(197, 160, 33, 0.4);
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .nav-grid { 
+            display: grid; 
+            grid-template-columns: repeat(2, 1fr); 
+            gap: 15px; 
+            width: 100%; 
+            max-width: 500px; 
+        }
+        .menu-btn { 
+            background: rgba(255,255,255,0.08); 
+            color: #fff; 
+            padding: 18px 10px; 
+            border-radius: 20px; 
+            text-align: center; 
+            cursor: pointer; 
+            border: 1px solid rgba(255,255,255,0.15); 
+            transition: all 0.3s ease; 
+        }
+        .menu-btn i { font-size: 1.8rem; margin-bottom: 8px; display: block; color: var(--accent); }
+        .menu-btn span { font-size: 0.9rem; font-weight: bold; }
+        .menu-btn:hover { background: rgba(255,255,255,0.2); transform: translateY(-3px); }
+
+        #contentArea { display: none; padding: 20px; padding-bottom: 150px; min-height: 100vh; box-sizing: border-box; }
+        .back-nav { background: var(--primary); color: var(--accent); padding: 15px; border-radius: 12px; border: none; font-weight: 900; cursor: pointer; margin-bottom: 20px; width: 100%; font-size: 1rem; display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: var(--shadow); font-family: 'Tajawal'; }
+
+        .info-card { background: white; padding: 20px; border-radius: 20px; margin-bottom: 15px; border-right: 6px solid var(--accent); box-shadow: var(--shadow); }
+        .info-card h3 { color: var(--primary); margin: 0 0 15px 0; display: flex; align-items: center; gap: 10px; background: #fdf8e6; padding: 10px; border-radius: 10px; font-size: 1.1rem; }
+        .info-list { list-style: none; padding: 0; margin: 0; }
+        .info-list li { margin-bottom: 12px; display: flex; align-items: flex-start; gap: 12px; line-height: 1.6; font-size: 0.95rem; }
+        .info-list i { color: var(--accent); font-size: 1.1rem; margin-top: 4px; }
+
+        .topic-box {
+            background: #fcfcfc;
+            border: 1px solid #e2e8f0;
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        .topic-box h4 {
+            margin: 0 0 8px 0;
+            color: var(--primary);
+            font-size: 1.05rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .topic-box p {
+            margin: 0;
+            color: #555;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .rubric-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            font-size: 0.85rem;
+        }
+        .rubric-table th, .rubric-table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: right;
+        }
+        .rubric-table th {
+            background: var(--primary);
+            color: white;
+        }
+
+        .admin-header { background: white; padding: 20px; border-radius: 20px; box-shadow: var(--shadow); margin-bottom: 25px; border-top: 5px solid var(--accent); }
+
+        .progress-container { width: 100%; background: #eee; border-radius: 10px; margin: 15px 0; display: none; overflow: hidden; }
+        #progressBar { width: 0%; height: 12px; background: var(--success); transition: 0.3s; }
+        
+        #previewBox { display: none; width: 100%; margin-top: 15px; border-radius: 15px; overflow: hidden; border: 2px solid var(--accent); }
+        #finalUploadBtn { display: none; width: 100%; background: var(--success); color: white; padding: 15px; border-radius: 12px; border: none; font-weight: 900; margin-top: 10px; cursor: pointer; font-family: 'Tajawal'; font-size: 1rem; }
+
+        .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+        .stat-card { background: #fcfcfc; padding: 15px; border-radius: 15px; text-align: center; border: 1px solid #eee; position: relative; word-break: break-word; }
+        .stat-card i { font-size: 1.4rem; color: var(--accent); margin-bottom: 8px; display: block; }
+        .stat-card b { display: block; font-size: 1.2rem; color: var(--primary); margin-top: 5px; }
+
+        .student-row { background: white; padding: 18px; border-radius: 20px; margin-bottom: 15px; box-shadow: var(--shadow); border-right: 8px solid #ddd; }
+        .student-row.sent { border-right-color: var(--success); }
+        .action-btns { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 12px; }
+        .btn-act { padding: 10px 5px; border-radius: 10px; border: none; font-family: 'Tajawal'; font-size: 0.8rem; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 5px; }
+        .btn-view { background: #eef2ff; color: var(--info); grid-column: span 3; }
+
+        #toast {
+            visibility: hidden; min-width: 250px; background-color: var(--primary); color: #fff;
+            text-align: center; border-radius: 30px; padding: 14px 20px; position: fixed;
+            z-index: 10001; left: 50%; bottom: 85px; transform: translateX(-50%);
+            border: 1px solid var(--accent); box-shadow: 0 8px 20px rgba(0,0,0,0.3); font-weight: bold;
+        }
+        #toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
+        @keyframes fadein { from { bottom: 60px; opacity: 0; } to { bottom: 85px; opacity: 1; } }
+        @keyframes fadeout { from { bottom: 85px; opacity: 1; } to { bottom: 60px; opacity: 0; } }
+
+        .export-btn {
+            width: 100%; background: var(--success); color: white; border: none;
+            padding: 14px; border-radius: 12px; font-weight: bold; font-family: 'Tajawal';
+            margin-top: 15px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 1rem;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- الشريط السفلي الثابت يضم مقدم المبادرة فقط -->
+    <div class="universal-footer">
+        <div class="f-item">
+            <i class="fas fa-user-tie"></i>
+            <span>مقدم المبادرة</span>
+            <b>أ / عادل علي الصيعري</b>
+        </div>
+    </div>
+
+    <!-- الواجهة الرئيسية -->
+    <div id="mainMenu">
+        <div class="logo-circle">
+            <i class="fas fa-microphone-alt"></i>
+        </div>
+        <div class="main-title">مبادرة دقيقة بلغتي الفصيحة</div>
+        <div class="school-info">«بالفصحى نلتقي.. وبجمال البيان نرتتقي»</div>
+        
+        <div class="overall-progress-card">
+            <div style="display:flex; justify-content:space-between; font-size:0.9rem; font-weight:bold;">
+                <span>نسبة التفاعل والمشاركة الكلية:</span>
+                <span id="homePercText">0%</span>
+            </div>
+            <div class="overall-progress-bar">
+                <div class="overall-progress-fill" id="homePercFill"></div>
+            </div>
+        </div>
+
+        <button id="pwaInstallBtn" onclick="installPWA()"><i class="fas fa-download"></i> تثبيت التطبيق على الهاتف</button>
+
+        <div class="nav-grid">
+            <div class="menu-btn" onclick="openSec('info')"><i class="fas fa-info-circle"></i><span>عن المبادرة</span></div>
+            <div class="menu-btn" onclick="openSec('topics')"><i class="fas fa-book-reader"></i><span>مكتبة الفصحى</span></div>
+            <div class="menu-btn" onclick="openSec('upload')"><i class="fas fa-video"></i><span>شارك الآن</span></div>
+            <div class="menu-btn" onclick="openSec('honor')"><i class="fas fa-medal"></i><span>لوحة الشرف</span></div>
+            <div class="menu-btn" onclick="openSec('gallery')" style="grid-column: span 2;"><i class="fas fa-star"></i><span>فرسان الفصحى</span></div>
+            <div class="menu-btn" onclick="checkAdmin()" style="grid-column: span 2;"><i class="fas fa-user-shield"></i><span>لوحة التحكم</span></div>
+        </div>
+    </div>
+
+    <!-- منطقة المحتوى للأقسام -->
+    <div id="contentArea">
+        <button class="back-nav" onclick="goHome()"><i class="fas fa-chevron-right"></i> العودة للقائمة الرئيسية</button>
+
+        <!-- قسم عن المبادرة -->
+        <div id="infoSec" class="section" style="display:none">
+            <div class="info-card">
+                <h3><i class="fas fa-bullseye"></i> فكرة وأهداف المبادرة:</h3>
+                <p style="font-size:0.95rem; line-height:1.7; color:#444; margin-bottom:12px;">
+                    مسابقة شفهية تستهدف طلبة الصفين الخامس والسادس لإثراء الحصيلة اللغوية والمفردات التعبيرية واكتشاف المواهب الطلابيّة عبر تسليم مقطع مرئي لمدة دقيقة واحدة باللغة العربية الفصيحة.
+                </p>
+                <ul class="info-list">
+                    <li><i class="fas fa-check-circle"></i> تعزيز الثقة بالنفس والقدرة على مواجهة الجمهور دون تردد.</li>
+                    <li><i class="fas fa-check-circle"></i> كسر حاجز الخوف من التحدث بالفصحى وتحويلها إلى ممارسة يومية ممتعة.</li>
+                    <li><i class="fas fa-check-circle"></i> الاعتزاز باللغة العربية الفصيحة كجزء أصيل من الهوية العمانية.</li>
+                </ul>
+            </div>
+
+            <div class="info-card">
+                <h3><i class="fas fa-clipboard-list"></i> معايير التقييم والتحكيم (من 25 درجة):</h3>
+                <table class="rubric-table">
+                    <thead>
+                        <tr>
+                            <th>المعيار</th>
+                            <th>الدرجة</th>
+                            <th>الوصف التفصيلي</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><b>سلامة النطق والضبط</b></td>
+                            <td>5 درجات</td>
+                            <td>خلو الكلمات من الأخطاء النحوية، سلامة النطق ومخارج الحروف.</td>
+                        </tr>
+                        <tr>
+                            <td><b>التنغيم والتلحين الصوتي</b></td>
+                            <td>5 درجات</td>
+                            <td>التنويع في نبرات الصوت حسب المعنى (تعجب، استفهام، حماس).</td>
+                        </tr>
+                        <tr>
+                            <td><b>الثقة ومواجهة الجمهور</b></td>
+                            <td>5 درجات</td>
+                            <td>التواصل البصري، لغة الجسد الإيجابية، والثبات في الأداء.</td>
+                        </tr>
+                        <tr>
+                            <td><b>الفصاحة والبلاغة</b></td>
+                            <td>5 درجات</td>
+                            <td>اختيار مفردات رصينة ومبسطة تعبر عن الفكرة بوضوح دون تكلف.</td>
+                        </tr>
+                        <tr>
+                            <td><b>الالتزام بالوقت</b></td>
+                            <td>5 درجات</td>
+                            <td>إنهاء المشاركة في حدود الدقيقة الواحدة.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="info-card" style="background: #eefdf4; border-right-color: var(--success);">
+                <h3><i class="fas fa-calendar-alt"></i> الشروط وآلية التسليم:</h3>
+                <ul class="info-list">
+                    <li><i class="fas fa-user-tag"></i> يبدأ المقطع بالتعريف بالنفس واسم المدرسة.</li>
+                    <li><i class="fas fa-microphone"></i> الالتزام بلغة عربية فصيحة وتوظيف مهارات الإلقاء الجيد.</li>
+                    <li><i class="fas fa-clock"></i> مدة المقطع دقيقة واحدة فقط.</li>
+                    <li><i class="fas fa-calendar-check"></i> آخر موعد لقبول المشاركات: <b>30 أكتوبر</b>.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- قسم مكتبة الفصحى -->
+        <div id="topicsSec" class="section" style="display:none">
+            <div class="info-card">
+                <h3><i class="fas fa-book-open"></i> موضوعات مقترحة للتحدث في دقيقة</h3>
+                <p style="font-size:0.9rem; color:#666; margin-bottom:15px;">اختر أحد الموضوعات التالية أو خذ منها فكرة للتحدث عنها بلغة عربية فصيحة معبرة:</p>
+
+                <div class="topic-box" style="border-right: 4px solid #c5a021;">
+                    <h4><i class="fas fa-flag" style="color:#c5a021"></i> محور الوطن والمواطنة</h4>
+                    <p><b>عُمان مجد وحضارة:</b> تحدث عن اعتزازك بوطنك سلطنة عمان، وكيف تساهم كطالب في بنائه والحفاظ على مقدراته بالجد والاجتهاد.</p>
+                </div>
+
+                <div class="topic-box" style="border-right: 4px solid #27ae60;">
+                    <h4><i class="fas fa-home" style="color:#27ae60"></i> محور الأسرة والوالدين</h4>
+                    <p><b>فضل الوالدين:</b> عبّر في دقيقة واحدة عن مكانة الأم والأب في حياتك، وكيف تكون إنساناً باراً بأسرتك ومصدر فخر لهم.</p>
+                </div>
+
+                <div class="topic-box" style="border-right: 4px solid #3498db;">
+                    <h4><i class="fas fa-users" style="color:#3498db"></i> محور المجتمع والأخلاق</h4>
+                    <p><b>الاحترام والتعاون:</b> تحدث عن أهمية التسامح وحسن التعامل مع الزملاء والجيران ودور الأخلاق الحسنة في بناء مجتمع متماسك.</p>
+                </div>
+
+                <div class="topic-box" style="border-right: 4px solid #9b59b6;">
+                    <h4><i class="fas fa-language" style="color:#9b59b6"></i> محور لغتي وأهمية العلم</h4>
+                    <p><b>جمال اللغة العربية:</b> عبّر عن حبك للغة الضاد، ولماذا نعتز بالتحدث بها وتطوير مهاراتنا في قراءة الكتب والقراءة الشغوفة.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- قسم مشاركة الفيديو -->
+        <div id="uploadSec" class="section" style="display:none">
+            <div class="admin-header" style="text-align:center">
+                <h3 style="color:var(--primary); margin-bottom:15px;"><i class="fas fa-video"></i> تسجيل أو رفع الدقيقة اللغوية</h3>
+                
+                <select id="cls" onchange="loadStu()" style="width:100%; padding:12px; border-radius:12px; margin-bottom:10px; font-family:'Tajawal'; border:2px solid #eee;">
+                    <option value="">اختر الصف</option>
+                    <option value="5-1">5-1</option>
+                    <option value="5-2">5-2</option>
+                    <option value="5-3">5-3</option>
+                    <option value="6-1">6-1</option>
+                    <option value="6-2">6-2</option>
+                </select>
+                <select id="stu" style="width:100%; padding:12px; border-radius:12px; margin-bottom:20px; font-family:'Tajawal'; border:2px solid #eee;">
+                    <option>اختر الاسم</option>
+                </select>
+
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:10px;">
+                    <button class="menu-btn" style="background:var(--primary)" onclick="doUploadDevice()"><i class="fas fa-file-upload"></i> من الجهاز</button>
+                    <button class="menu-btn" style="background:var(--danger)" onclick="doUploadCamera()"><i class="fas fa-video"></i> الكاميرا</button>
+                </div>
+
+                <video id="previewBox" height="200" style="display:none; width:100%; margin-top:15px; border-radius:15px; object-fit: cover;" controls></video>
+                <div class="progress-container" id="progCont"><div id="progressBar"></div></div>
+                <p id="upStatus" style="margin-top:10px; font-weight:bold; color: var(--primary)"></p>
+                <button id="finalUploadBtn" onclick="sendToFirebase()"><i class="fas fa-paper-plane"></i> إرسال المشاركة النهائية</button>
+                <input type="file" id="fIn" style="display:none" onchange="handleFileSelect()">
+            </div>
+        </div>
+
+        <!-- قسم لوحة التحكم -->
+        <div id="adminSec" class="section" style="display:none">
+            <div class="admin-header">
+                <h3 style="color:var(--primary); margin-bottom:15px; text-align:center;"><i class="fas fa-user-shield"></i> لوحة متابعة وتقييم المبادرة</h3>
+                
+                <div class="stats-grid">
+                    <div class="stat-card"><i class="fas fa-users"></i><span>إجمالي الطلاب</span><b id="t-total">0</b></div>
+                    <div class="stat-card"><i class="fas fa-check-double" style="color:var(--success)"></i><span>شاركو</span><b id="t-sent">0</b></div>
+                    <div class="stat-card"><i class="fas fa-clock" style="color:var(--danger)"></i><span>متبقي</span><b id="t-not">0</b></div>
+                    <div class="stat-card"><i class="fas fa-percent" style="color:var(--info)"></i><span>النسبة</span><b id="t-perc">0%</b></div>
+                </div>
+
+                <input type="text" id="admSearch" oninput="renderAdmin()" placeholder="🔍 ابحث عن اسم الطالب..." style="width:100%; padding:12px 15px; border-radius:12px; margin-top:15px; border:2px solid #eee; box-sizing:border-box; font-family:'Tajawal'; font-size:0.95rem;">
+
+                <select id="admFilter" onchange="renderAdmin()" style="width:100%; padding:12px 15px; border-radius:12px; margin-top:10px; border:2px solid #eee; font-family:'Tajawal'; font-size:0.95rem;">
+                    <option value="all">جميع الصفوف (الخامس والسادس)</option>
+                    <option value="5-1">5-1</option>
+                    <option value="5-2">5-2</option>
+                    <option value="5-3">5-3</option>
+                    <option value="6-1">6-1</option>
+                    <option value="6-2">6-2</option>
+                </select>
+
+                <button class="export-btn" onclick="exportCSV()"><i class="fas fa-file-excel"></i> تصدير تقرير التقييم (Excel / CSV)</button>
+            </div>
+            <div id="admList"></div>
+        </div>
+
+        <!-- لوحة الشرف -->
+        <div id="honorSec" class="section" style="display:none">
+            <div class="info-card" style="border-right-color: var(--success); background: #f9fffb;">
+                <h3 style="color:var(--success);"><i class="fas fa-video"></i> لوحة شرف المتحدثين (المشاركات المرئية)</h3>
+                <div id="hListOral" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(130px, 1fr)); gap:10px; margin-top:10px;"></div>
+            </div>
+        </div>
+
+        <!-- فرسان الفصحى والمتميزين -->
+        <div id="gallerySec" class="section" style="display:none">
+            <h3 style="color:var(--primary); margin-bottom:15px; text-align:center;"><i class="fas fa-star" style="color:var(--accent)"></i> فرسان الفصحى المتميزون</h3>
+            <div id="gList"></div>
+        </div>
+    </div>
+
+    <!-- نافذة عرض الفيديو المنبثقة -->
+    <div id="videoModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index:10000; align-items:center; justify-content:center; padding:15px;">
+        <div style="width:100%; max-width:500px; background:#fff; padding:15px; border-radius:20px; text-align:center; position:relative; box-shadow: 0 10px 25px rgba(0,0,0,0.3);">
+            <button onclick="closeVideoModal()" style="position:absolute; top:12px; left:12px; background:var(--danger); color:white; border:none; border-radius:50%; width:32px; height:32px; font-weight:bold; cursor:pointer; font-size: 1rem;">✕</button>
+            <h3 style="margin: 5px 0 15px 0; color:var(--primary); font-size:1.1rem;"><i class="fas fa-play-circle" style="color:var(--accent)"></i> مشاهدة مشاركة الطالب</h3>
+            <video id="modalPlayer" controls autoplay style="width:100%; border-radius:15px; max-height:70vh; background:#000;"></video>
+        </div>
+    </div>
+
+    <!-- عنصر الإشعار المنبثق -->
+    <div id="toast">تم حفظ التغييرات بنجاح!</div>
+
+    <!-- مكتبات Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+    <script>
+        // قوائم طلاب الصفين الخامس (5-1, 5-2, 5-3) والسادس (6-1, 6-2) الرسمية
+        const studentData = { 
+            "5-1": [
+                "سهيل بن سالم بن محمد سعد خوار", "طلال بن مرشد بن بخيت عبد الله مسن", "أسامة محمد خليل ابراهيم", 
+                "احمد عبد العزيم حسين الطاهر", "احمد عواض عبد الله عبد اللطيف", "ادم عيد محمد مرعي حسين", 
+                "المحناء بن سالم بن سعيد المحناء جداد", "اواب محمد حمد النيل احمد", "بخيت بن أحمد بن بخيت أحمد جداد", 
+                "بخيت بن سالم بن مبخوت محمد الراشدي", "بخيت بن محمد بن سالم عبد الله الراشدي", "حسين بن علي بن محمد بخيت منيف خوار", 
+                "خالد بن محمد بن سعيد ظاوي العامري", "خلفان بن مرشد بن خلفان سويد المعولي", "روح الله نظری", 
+                "سالم بن حسن بن سالم عبد الله الراشدي", "سالم بن محمد بن بخيت سالم خوار", "سالم بن محمد بن سعد حفيظ خوار", 
+                "سالم بن مسلم بن بخيت رویزم صندل", "سعود بن غصن بن يحيى مسلم الجنيبي", "يحيى بن يعقوب بن يحيى مسلم الجنيبي", 
+                "يوسف بن يعقوب بن جمعه خميس الخميسي"
+            ],
+            "5-2": [
+                "أحمد بن حمدان بن أحمد محمد مسن الكثيري", "سالم بن عبد الله بن سالم عبد الله الراشدي", "سعيد بن حسن بن سعيد سعد خوار", 
+                "سعيد بن علي بن بخيت محمد الراشدي", "سعيد بن محمد بن احمد محمد الهزار الكثيري", "سعيد بن محمد بن سعيد محمد خوار", 
+                "سلمان بن حمزة بن مسلم نفل ربعات الكثيري", "سلمان بن عبد العزيز بن بخيت حم مسن", "سهيل بن احمد بن سلطان اسد الراشدي", 
+                "سهيل بن احمد بن مرعي نشران الشعشعي", "سهيل بن عبد الله بن محمد عبدالله خوار", "سهيل بن محمد بن سهيل سعيد المسهلي", 
+                "شايع بن نواف بن أحمد محمد مسن", "شهاب بن موسى بن نصيب نافع الخميسي", "صدام بن محمد بن سالم قائل جداد", 
+                "صدام حسين محمد السطري", "طالب ظفر احمد التام", "عبد الله بن علي بن مبخوت سالم الراشدي", 
+                "عزام بن راكان بن مسلم محمد مسن الكثيري", "علي بن سالم بن ظويهر سالم جداد", "علي بن سعد بن محمد سعيد خوار", 
+                "علي سعيدان سعيد الراشدي", "عمر خالد العبد الرزاق", "غانم بن محمد بن صالح احمد جداد", 
+                "غيث بن سعيد بن صالح على المسهلي", "نبراس فتحي الغربي"
+            ],
+            "5-3": [
+                "سهيل بن أحمد بن سهيل سالم خوار", "أنس محمود عمر عبد الحكيم بلال", "س سالم بن عبد الله بن سالم عبد الله الراشدي", 
+                "فهد بن سهيل بن أحمد سالم مسن", "فيصل بن سعيدان بن بخيت رویزم صندل", "كثير بن محمد بن مسلم أحمد جداد", 
+                "كريم محمود كريم ابراهيم احمد", "ليث بن فهد بن توفيق جمعه البحري", "مؤمن عمار محمد مؤمن محمد", 
+                "مبروك بن محمد بن سالم مبارك المسهلي", "محسن بن أحمد بن سهيل سالم خوار", "محمد بن تركي بن محمد سهيل مسن", 
+                "محمد بن حمود بن سالم سعيد الوائلي", "محمد بن سعيد بن العبد زايد مسن الكثيري", "محمد بن سعيد بن محمد سعد جداد", 
+                "محمد بن عبد الله بن سهيل حافظ خوار", "محمد بن علي بن صالح علي المسهلي", "محمد بن عمر بن مبارك عبد الله العوبثاني", 
+                "محمد بن مالك بن مسلم سعيد مسن", "محمد بن منهل بن مسلم سهيل جداد", "محمود محمد رجب محمد البني", 
+                "مسلم بن حمد بن مسلم أحمد جداد", "مسلم بن عبد الله بن سالم احمد جداد", "مشعل بن محمد بن سالم علي الحمر", 
+                "يوسف بن سالم بن محمد الطوف الكثيري"
+            ],
+            "6-1": [
+                "أحمد بن سالم بن سعيد حسن خوار", "إلياس بن ابراهيم بن حمد مسعود العامري", "الأمين محمد احمد الطيب", 
+                "تركي بن محمد بن سعيد مسلم مسن", "حسين محمد يوسف خضر", "خالد أحمد حسن التابعي", 
+                "خالد بن راشد بن سعيد سالم مسن", "خالد بن عمرو بن غفيل سالم خوار", "سالم بن عبد الله بن سالم احمد جداد", 
+                "سالم بن محمد بن سالم صالح جداد", "سالم بن مسلم بن سهيل محمد الراشدي", "سعود بن سالم بن ظويهر سالم جداد", 
+                "سعود بن شهاب بن نافع مسلم المسهلي", "سعيد بن عبد الله بن بقال خويدع خوار", "سلطان بن محمد بن علي مهوي العامري", 
+                "عامر بن سهيل بن عامر سليم قمصيت", "عبد الرحمن احمد فوزي عبد الفتاح", "عبد الله بن محمد بن عيظه سعيد جداد الكثيري", 
+                "علي بن سعد بن مسلم سعيد الراشدي", "عوض بن محمد بن عوض خادم الوهيبي", "غانم بن محمد بن سليم مسلم الجنيبي", 
+                "غانم بن محمد بن مبارك بخيت جداد", "فهد بن محمد بن سالم مسلم المسهلي", "مازن مصطفى محمد احمد على", 
+                "محمد احمد محمود عبد الحميد", "محمد بن حسين بن سالم مبخوت خوار", "محمد بن سعيد بن سالم خويتم مسن", 
+                "محمد بن مسلم بن محمد بخيت مسن", "مروان سلامه حسين علي شليل", "مسلم بن سعيد بن سعد سعيد جداد", 
+                "مسلم بن محمد بن مسلم احمد جداد"
+            ],
+            "6-2": [
+                "أمجد بن سعيد بن خميس سعيد الشكيلي", "تميم بن نائف بن محمد سعيد مياح المسهلي", "تيمور بن أحمد بن مبروك أحمد مسن", 
+                "خالد بن أحمد بن مسلم محمد مسن", "خالد بن محمد بن مسلم سنكور خوار", "رزين بن مرشد بن خلفان سويد المعولي", 
+                "سالم بن حمد بن مبخوت حماده جداد", "سالم بن نايف بن سالم عيضه جداد", "سعيد بن بخيت بن عبدي بخيت خوار", 
+                "سعيد بن خالد بن بخيت زايد مسن", "سعيد بن صالح بن سهيل علي بيت جداد", "سلمان بن ناجي بن سالم سعد خوار", 
+                "سهيل بن معمر بن سهيل مسلم جداد الكثيري", "صالح يحيى مسلم", "صقر بن محمد بن العبد سهيل جداد", 
+                "عبد الرحمن أيمن هشام سقاو نايل", "عبد الرحمن بن علي بن سهيل علي زوله", "عبد الرحمن سامي محمد احمد يوسف المزين", 
+                "عمار بن ياسر بن مبروك احمد مسن", "محمد بن بخيت بن احمد محمد مسن", "محمد بن سالم بن سهيل مطر جداد", 
+                "محمد بن عامر بن محمد احمد المسهلي", "محمد بن غازي بن كفيش جعيد جداد الكثيري", "محمد بن فهد بن سالم خويتم مسن", 
+                "مسلم بن بخيت بن عبدي بخيت خوار", "همدان بن احمد بن عبدالله محمد جداد", "هيثم بن فواز بن سليمان عبد الله الهاشمي", 
+                "يوسف بن عبد الله بن علي عبيد الشحي"
+            ]
+        };
+
+        var db, subs = {};
+        
+        try {
+            firebase.initializeApp({ databaseURL: "https://ahfaz-w-aktob-default-rtdb.firebaseio.com/" });
+            db = firebase.database();
+            db.ref('submissions_fasaha').on('value', s => { 
+                subs = s.val() || {}; 
+                updateUI(); 
+                renderAdmin(); 
+            });
+        } catch(e) {
+            console.error("Firebase connection error:", e);
+        }
+
+        function checkAdmin() { 
+            let p = prompt("أدخل كلمة مرور الإدارة:"); 
+            if(p === "ali2026") {
+                openSec('admin'); 
+            } else if(p !== null) {
+                alert("كلمة المرور غير صحيحة!"); 
+            }
+        }
+
+        function openSec(id) { 
+            document.getElementById('mainMenu').style.display = 'none'; 
+            document.getElementById('contentArea').style.display = 'block'; 
+            
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(s => s.style.display = 'none'); 
+            
+            const targetSec = document.getElementById(id + 'Sec');
+            if(targetSec) {
+                targetSec.style.display = 'block'; 
+            }
+            window.scrollTo(0,0); 
+        }
+
+        function goHome() { 
+            document.getElementById('mainMenu').style.display = 'flex'; 
+            document.getElementById('contentArea').style.display = 'none'; 
+        }
+
+        function showToast(msg) {
+            let t = document.getElementById('toast');
+            t.innerText = msg;
+            t.className = 'show';
+            setTimeout(() => { t.className = t.className.replace('show', ''); }, 3000);
+        }
+
+        function loadStu() {
+            let c = document.getElementById('cls').value;
+            let sSelect = document.getElementById('stu');
+            sSelect.innerHTML = '<option value="">اختر الاسم</option>';
+            if(studentData[c]) {
+                studentData[c].forEach(s => {
+                    sSelect.innerHTML += `<option value="${s}">${s}</option>`;
+                });
+            }
+        }
+
+        let selectedFile = null;
+        function doUploadDevice() {
+            document.getElementById('fIn').removeAttribute('capture');
+            document.getElementById('fIn').click();
+        }
+
+        function doUploadCamera() {
+            document.getElementById('fIn').setAttribute('capture', 'environment');
+            document.getElementById('fIn').click();
+        }
+
+        function handleFileSelect() {
+            let f = document.getElementById('fIn').files[0];
+            if(f) {
+                selectedFile = f;
+                let previewBox = document.getElementById('previewBox');
+                previewBox.src = URL.createObjectURL(f);
+                previewBox.style.display = 'block';
+                document.getElementById('finalUploadBtn').style.display = 'block';
+            }
+        }
+
+        function sendToFirebase() {
+            let cls = document.getElementById('cls').value;
+            let stu = document.getElementById('stu').value;
+            if(!cls || !stu) { alert("يرجى اختيار الصف واسم الطالب أولاً"); return; }
+            if(!selectedFile) { alert("يرجى اختيار مقطع فيديو أولاً"); return; }
+
+            document.getElementById('progCont').style.display = 'block';
+            document.getElementById('upStatus').innerText = 'جاري حفظ ورفع المشاركة المرئية...';
+
+            let reader = new FileReader();
+            reader.onload = function(e) {
+                let base64Video = e.target.result;
+                let key = cls + "_" + stu.replace(/[\.\#\$\[\]]/g, "_");
+                
+                db.ref('submissions_fasaha/' + key).update({
+                    cls: cls,
+                    stu: stu,
+                    video: base64Video,
+                    type: 'oral',
+                    timestamp: new Date().toISOString()
+                }, err => {
+                    if(err) {
+                        alert("حدث خطأ في الحفظ: " + err.message);
+                    } else {
+                        showToast("تم إرسال دقيقتك الفصيحة بنجاح!");
+                        document.getElementById('upStatus').innerText = 'تم التسليم بنجاح!';
+                        document.getElementById('finalUploadBtn').style.display = 'none';
+                    }
+                });
+            };
+            reader.readAsDataURL(selectedFile);
+        }
+
+        function updateUI() {
+            let totalStudents = 0;
+            Object.keys(studentData).forEach(k => totalStudents += studentData[k].length);
+            let totalSent = Object.keys(subs).length;
+            let perc = totalStudents > 0 ? Math.round((totalSent / totalStudents) * 100) : 0;
+
+            document.getElementById('homePercText').innerText = perc + "%";
+            document.getElementById('homePercFill').style.width = perc + "%";
+
+            let hOral = document.getElementById('hListOral');
+            hOral.innerHTML = '';
+
+            Object.keys(subs).forEach(k => {
+                let s = subs[k];
+                if(s.video) {
+                    hOral.innerHTML += `<div style="background:#fff; padding:10px; border-radius:12px; border:1px solid #eee; text-align:center; font-size:0.85rem; font-weight:bold;">
+                        <i class="fas fa-user-circle" style="color:var(--accent); font-size:1.2rem; display:block; margin-bottom:5px;"></i>
+                        ${s.stu}
+                    </div>`;
+                }
+            });
+        }
+
+        function renderAdmin() {
+            let list = document.getElementById('admList');
+            let search = document.getElementById('admSearch').value.toLowerCase();
+            let filter = document.getElementById('admFilter').value;
+            list.innerHTML = '';
+
+            let totalCount = 0;
+            let sentCount = 0;
+
+            Object.keys(studentData).forEach(c => {
+                if(filter === 'all' || filter === c) {
+                    studentData[c].forEach(sName => {
+                        totalCount++;
+                        if(search && !sName.toLowerCase().includes(search)) return;
+
+                        let key = c + "_" + sName.replace(/[\.\#\$\[\]]/g, "_");
+                        let sub = subs[key];
+                        let isSent = !!sub;
+                        if(isSent) sentCount++;
+
+                        list.innerHTML += `
+                            <div class="student-row ${isSent ? 'sent' : ''}">
+                                <div style="display:flex; justify-content:space-between; align-items:center;">
+                                    <b>${sName} (${c})</b>
+                                    <span style="color:${isSent ? 'var(--success)' : 'var(--danger)'}; font-weight:bold; font-size:0.85rem;">
+                                        ${isSent ? 'مشارك' : 'غير مشارك'}
+                                    </span>
+                                </div>
+                                ${sub && sub.video ? `<button class="btn-act btn-view" onclick="playModalVideo('${sub.video}')"><i class="fas fa-play"></i> عرض الدقيقة المرئية</button>` : ''}
+                            </div>
+                        `;
+                    });
+                }
+            });
+
+            document.getElementById('t-total').innerText = totalCount;
+            document.getElementById('t-sent').innerText = sentCount;
+            document.getElementById('t-not').innerText = totalCount - sentCount;
+            document.getElementById('t-perc').innerText = totalCount > 0 ? Math.round((sentCount / totalCount) * 100) + '%' : '0%';
+        }
+
+        function playModalVideo(src) {
+            document.getElementById('modalPlayer').src = src;
+            document.getElementById('videoModal').style.display = 'flex';
+        }
+
+        function closeVideoModal() {
+            document.getElementById('videoModal').style.display = 'none';
+            document.getElementById('modalPlayer').pause();
+        }
+
+        function exportCSV() {
+            let csv = "\uFEFFالاسم,الصف,حالة المشاركة\n";
+            Object.keys(studentData).forEach(c => {
+                studentData[c].forEach(s => {
+                    let key = c + "_" + s.replace(/[\.\#\$\[\]]/g, "_");
+                    let sub = subs[key];
+                    let status = sub ? "مشارك" : "غير مشارك";
+                    csv += `"${s}","${c}","${status}"\n`;
+                });
+            });
+            let blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            let link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = "تقرير_مبادرة_دقيقة_بلغتي_الفصيحة.csv";
+            link.click();
+        }
+    </script>
+</body>
+</html>
