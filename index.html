@@ -69,7 +69,7 @@
             display: flex; 
             flex-direction: column; 
             align-items: center; 
-            padding: 40px 15px 150px 15px; 
+            padding: 50px 15px 150px 15px; 
             position: relative; 
             box-sizing: border-box; 
         }
@@ -91,20 +91,7 @@
         .logo-circle img { width: 100%; height: 100%; object-fit: cover; }
 
         .main-title { color: #fff; font-size: 2.1rem; font-weight: 900; margin-bottom: 6px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); text-align: center; }
-        .school-info { color: var(--accent); font-weight: 700; font-size: 1.05rem; margin-bottom: 20px; text-align: center; letter-spacing: 0.5px; }
-
-        .overall-progress-card {
-            width: 100%; max-width: 500px; 
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(197, 160, 33, 0.4); 
-            border-radius: 15px;
-            padding: 15px 20px; color: white; margin-bottom: 20px; text-align: center; box-sizing: border-box;
-        }
-        .overall-progress-bar {
-            width: 100%; height: 12px; background: rgba(255, 255, 255, 0.2);
-            border-radius: 10px; overflow: hidden; margin-top: 10px;
-        }
-        .overall-progress-fill { height: 100%; width: 0%; background: var(--accent); transition: width 0.5s ease; }
+        .school-info { color: var(--accent); font-weight: 700; font-size: 1.05rem; margin-bottom: 25px; text-align: center; letter-spacing: 0.5px; }
 
         #pwaInstallBtn {
             display: none; background: var(--accent); color: var(--primary);
@@ -212,16 +199,6 @@
         </div>
         <div class="main-title">مبادرة دقيقة بلغتي الفصيحة</div>
         <div class="school-info">«بالفصحى نلتقي.. وبجمال البيان نرتتقي»</div>
-        
-        <div class="overall-progress-card">
-            <div style="display:flex; justify-content:space-between; font-size:0.9rem; font-weight:bold;">
-                <span>نسبة التفاعل والمشاركة الكلية:</span>
-                <span id="homePercText">0%</span>
-            </div>
-            <div class="overall-progress-bar">
-                <div class="overall-progress-fill" id="homePercFill"></div>
-            </div>
-        </div>
 
         <button id="pwaInstallBtn" onclick="installPWA()"><i class="fas fa-download"></i> تثبيت التطبيق على الهاتف</button>
 
@@ -635,22 +612,12 @@
         }
 
         function updateUI() {
-            let totalStudents = 0;
-            Object.keys(studentData).forEach(k => totalStudents += studentData[k].length);
-            let totalSent = Object.keys(subs).length;
-            let perc = totalStudents > 0 ? Math.round((totalSent / totalStudents) * 100) : 0;
-
-            document.getElementById('homePercText').innerText = perc + "%";
-            document.getElementById('homePercFill').style.width = perc + "%";
-
-            // بناء جداول لوحة الشرف مقسمة حسب الصفوف
             let container = document.getElementById('honorTablesContainer');
             container.innerHTML = '';
 
             let hasAnySubmission = false;
 
             Object.keys(studentData).forEach(clsKey => {
-                // تجميع الطلاب المرسلين لهذا الصف فقط
                 let sentStudentsInClass = [];
                 studentData[clsKey].forEach(sName => {
                     let key = clsKey + "_" + sName.replace(/[\.\#\$\[\]]/g, "_");
