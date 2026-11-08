@@ -207,8 +207,9 @@
             <div class="menu-btn" onclick="openSec('topics')"><i class="fas fa-book-reader"></i><span>مكتبة الفصحى</span></div>
             <div class="menu-btn" onclick="openSec('upload')"><i class="fas fa-video"></i><span>شارك الآن</span></div>
             <div class="menu-btn" onclick="openSec('honor')"><i class="fas fa-medal"></i><span>لوحة الشرف</span></div>
-            <div class="menu-btn" onclick="openSec('gallery')" style="grid-column: span 2;"><i class="fas fa-star"></i><span>فرسان الفصحى والمراكز</span></div>
-            <div class="menu-btn" onclick="checkAdmin()" style="grid-column: span 2;"><i class="fas fa-user-shield"></i><span>لوحة التحكم وتقييم الطلبة</span></div>
+            <div class="menu-btn" onclick="openSec('gallery')" style="grid-column: span 2;"><i class="fas fa-star"></i><span>فرسان الفصحى</span></div>
+            <div class="menu-btn" onclick="checkAdmin()" style="grid-column: span 2;"><i class="fas fa-user-shield"></i><span>لوحة التحكم</span></div>
+            <div class="menu-btn" onclick="checkGradingAuth()" style="grid-column: span 2; background: rgba(197, 160, 33, 0.2); border: 1px solid var(--accent);"><i class="fas fa-award"></i><span>تقييم مشاركات الطلبة</span></div>
         </div>
     </div>
 
@@ -231,7 +232,7 @@
             </div>
 
             <div class="info-card">
-                <h3><i class="fas fa-clipboard-list"></i> معايير التقييم والتحكيم (الإجمالي من 5 درجات):</h3>
+                <h3><i class="fas fa-clipboard-list"></i> معايير التقييم والتحكيم (من 5 درجات):</h3>
                 <table class="rubric-table">
                     <thead>
                         <tr>
@@ -242,7 +243,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td><b>مراعات السلامة اللغوية</b></td>
+                            <td><b>السلامة اللغوية</b></td>
                             <td>2 درجة</td>
                             <td>خلو الكلمات من الأخطاء النحوية، سلامة النطق ومخارج الحروف.</td>
                         </tr>
@@ -329,10 +330,10 @@
             </div>
         </div>
 
-        <!-- لوحة التحكم ورصد الدرجات بالمعايير -->
+        <!-- لوحة التحكم الأصلية -->
         <div id="adminSec" class="section" style="display:none">
             <div class="admin-header">
-                <h3 style="color:var(--primary); margin-bottom:15px; text-align:center;"><i class="fas fa-user-shield"></i> لوحة رصد درجات وتقييم الطلبة</h3>
+                <h3 style="color:var(--primary); margin-bottom:15px; text-align:center;"><i class="fas fa-user-shield"></i> لوحة متابعة وتقييم المبادرة</h3>
                 
                 <div class="stats-grid">
                     <div class="stat-card"><i class="fas fa-users"></i><span>إجمالي الطلاب</span><b id="t-total">0</b></div>
@@ -352,9 +353,30 @@
                     <option value="6-2">6-2</option>
                 </select>
 
-                <button class="export-btn" onclick="exportCSV()"><i class="fas fa-file-excel"></i> تصدير تقرير التقييم (Excel / CSV)</button>
+                <button class="export-btn" onclick="exportBasicCSV()"><i class="fas fa-file-excel"></i> تصدير تقرير المتابعة (Excel / CSV)</button>
             </div>
             <div id="admList"></div>
+        </div>
+
+        <!-- قسم تقييم مشاركات الطلبة المحمي بكلمة السر 12345 -->
+        <div id="gradingSec" class="section" style="display:none">
+            <div class="admin-header">
+                <h3 style="color:var(--primary); margin-bottom:15px; text-align:center;"><i class="fas fa-award"></i> تقييم مشاركات الطلبة في مبادرة دقيقة باللغة العربية الفصحى</h3>
+                
+                <div style="margin-bottom:15px;">
+                    <label style="display:block; margin-bottom:6px; font-weight:bold; color:var(--primary);">اختر المعلم المقيم:</label>
+                    <select id="evaluatorSelect" style="width:100%; padding:12px; border-radius:12px; border:2px solid var(--accent); font-family:'Tajawal'; font-size:1rem; font-weight:bold;">
+                        <option value="">-- اختر اسم المعلم المقيم --</option>
+                        <option value="علي محمد علي">علي محمد علي</option>
+                        <option value="وليد الهادي عبد اللاوي">وليد الهادي عبد اللاوي</option>
+                        <option value="سامي أحمد المزين">سامي أحمد المزين</option>
+                        <option value="هاني فتحي عبد الجواد">هاني فتحي عبد الجواد</option>
+                    </select>
+                </div>
+
+                <button class="export-btn" style="background:var(--primary);" onclick="exportGradingCSV()"><i class="fas fa-file-excel"></i> تصدير تقييم مشاركات الطلبة (Excel / CSV)</button>
+            </div>
+            <div id="gradingList"></div>
         </div>
 
         <!-- لوحة الشرف (منظمة بجداول لكل صف) -->
@@ -363,9 +385,9 @@
             <div id="honorTablesContainer"></div>
         </div>
 
-        <!-- فرسان الفصحى والمتميزين وتحديد المراكز -->
+        <!-- فرسان الفصحى والمتميزين -->
         <div id="gallerySec" class="section" style="display:none">
-            <h3 style="color:var(--primary); margin-bottom:15px; text-align:center;"><i class="fas fa-star" style="color:var(--accent)"></i> فرسان الفصحى الأوائل والمراكز المتقدمة</h3>
+            <h3 style="color:var(--primary); margin-bottom:15px; text-align:center;"><i class="fas fa-star" style="color:var(--accent)"></i> فرسان الفصحى المتميزون</h3>
             <div id="gList"></div>
         </div>
     </div>
@@ -477,6 +499,7 @@
                 subs = s.val() || {}; 
                 updateUI(); 
                 renderAdmin(); 
+                renderGrading();
                 updateGallery();
             });
         } catch(e) {
@@ -489,6 +512,15 @@
                 openSec('admin'); 
             } else if(p !== null) {
                 alert("كلمة المرور غير صحيحة!"); 
+            }
+        }
+
+        function checkGradingAuth() {
+            let p = prompt("أدخل كلمة مرور التقييم (12345):");
+            if(p === "12345") {
+                openSec('grading');
+            } else if(p !== null) {
+                alert("كلمة المرور غير صحيحة!");
             }
         }
 
@@ -657,7 +689,6 @@
             }
         }
 
-        // رصد الدرجات بالمعايير الدقيقة في لوحة التحكم
         function renderAdmin() {
             let list = document.getElementById('admList');
             let search = document.getElementById('admSearch').value.toLowerCase();
@@ -678,44 +709,15 @@
                         let isSent = !!sub;
                         if(isSent) sentCount++;
 
-                        let g1 = sub && sub.g1 !== undefined ? sub.g1 : '';
-                        let g2 = sub && sub.g2 !== undefined ? sub.g2 : '';
-                        let g3 = sub && sub.g3 !== undefined ? sub.g3 : '';
-                        let totalGrade = (sub && sub.totalGrade !== undefined) ? sub.totalGrade : 0;
-
                         list.innerHTML += `
                             <div class="student-row ${isSent ? 'sent' : ''}">
-                                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                                <div style="display:flex; justify-content:space-between; align-items:center;">
                                     <b>${sName} (${c})</b>
                                     <span style="color:${isSent ? 'var(--success)' : 'var(--danger)'}; font-weight:bold; font-size:0.85rem;">
                                         ${isSent ? 'مشارك' : 'غير مشارك'}
                                     </span>
                                 </div>
-                                ${isSent ? `
-                                    <div style="background:#f9f9f9; padding:12px; border-radius:12px; margin-top:8px; border:1px solid #eee;">
-                                        <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:8px; margin-bottom:10px; font-size:0.85rem;">
-                                            <div>
-                                                <label style="display:block; margin-bottom:4px; font-weight:bold;">السلامة اللغوية (من 2):</label>
-                                                <input type="number" min="0" max="2" step="0.5" id="g1_${key}" value="${g1}" oninput="calcTotal('${key}')" style="width:100%; padding:8px; border-radius:8px; border:1px solid #ccc; font-family:'Tajawal';">
-                                            </div>
-                                            <div>
-                                                <label style="display:block; margin-bottom:4px; font-weight:bold;">لغة الجسد (من 2):</label>
-                                                <input type="number" min="0" max="2" step="0.5" id="g2_${key}" value="${g2}" oninput="calcTotal('${key}')" style="width:100%; padding:8px; border-radius:8px; border:1px solid #ccc; font-family:'Tajawal';">
-                                            </div>
-                                            <div>
-                                                <label style="display:block; margin-bottom:4px; font-weight:bold;">الالتزام بالوقت (من 1):</label>
-                                                <input type="number" min="0" max="1" step="0.5" id="g3_${key}" value="${g3}" oninput="calcTotal('${key}')" style="width:100%; padding:8px; border-radius:8px; border:1px solid #ccc; font-family:'Tajawal';">
-                                            </div>
-                                        </div>
-                                        <div style="display:flex; justify-content:space-between; align-items:center;">
-                                            <span style="font-weight:bold; color:var(--primary);">المجموع الكلي: <b id="tot_${key}" style="color:var(--accent); font-size:1.1rem;">${totalGrade}</b> / 5</span>
-                                            <div>
-                                                <button class="btn-act" style="background:var(--success); color:white;" onclick="saveStudentGrade('${key}')"><i class="fas fa-save"></i> حفظ التقييم</button>
-                                                <button class="btn-act btn-view" onclick="playModalVideo('${sub.video}')"><i class="fas fa-play"></i> الفيديو</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                ` : ''}
+                                ${sub && sub.video ? `<div style="margin-top:10px;"><button class="btn-act btn-view" onclick="playModalVideo('${sub.video}')"><i class="fas fa-play"></i> عرض الدقيقة المرئية</button></div>` : ''}
                             </div>
                         `;
                     });
@@ -728,40 +730,95 @@
             document.getElementById('t-perc').innerText = totalCount > 0 ? Math.round((sentCount / totalCount) * 100) + '%' : '0%';
         }
 
-        function calcTotal(key) {
-            let v1 = parseFloat(document.getElementById('g1_' + key).value) || 0;
-            let v2 = parseFloat(document.getElementById('g2_' + key).value) || 0;
-            let v3 = parseFloat(document.getElementById('g3_' + key).value) || 0;
-            let sum = v1 + v2 + v3;
-            document.getElementById('tot_' + key).innerText = sum > 5 ? 5 : sum;
+        // واجهة تقييم مشاركات الطلبة لكل معلم
+        function renderGrading() {
+            let list = document.getElementById('gradingList');
+            if(!list) return;
+            list.innerHTML = '';
+
+            Object.keys(studentData).forEach(c => {
+                studentData[c].forEach(sName => {
+                    let key = c + "_" + sName.replace(/[\.\#\$\[\]]/g, "_");
+                    let sub = subs[key];
+                    if(!sub || !sub.video) return; // يعرض فقط الطلاب المشاركين الذين أرسلوا فيديوهات
+
+                    let evals = sub.evaluations || {};
+
+                    list.innerHTML += `
+                        <div class="student-row sent">
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                                <b>${sName} (${c})</b>
+                                <button class="btn-act btn-view" onclick="playModalVideo('${sub.video}')"><i class="fas fa-play"></i> عرض فيديو الطالب</button>
+                            </div>
+                            
+                            <div style="background:#f9f9f9; padding:12px; border-radius:12px; border:1px solid #eee; margin-top:10px;">
+                                <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:8px; margin-bottom:10px; font-size:0.85rem;">
+                                    <div>
+                                        <label style="display:block; margin-bottom:4px; font-weight:bold;">السلامة اللغوية (من 2):</label>
+                                        <input type="number" min="0" max="2" step="0.5" id="g1_${key}" value="${evals.g1 !== undefined ? evals.g1 : ''}" style="width:100%; padding:8px; border-radius:8px; border:1px solid #ccc; font-family:'Tajawal';">
+                                    </div>
+                                    <div>
+                                        <label style="display:block; margin-bottom:4px; font-weight:bold;">لغة الجسد (من 2):</label>
+                                        <input type="number" min="0" max="2" step="0.5" id="g2_${key}" value="${evals.g2 !== undefined ? evals.g2 : ''}" style="width:100%; padding:8px; border-radius:8px; border:1px solid #ccc; font-family:'Tajawal';">
+                                    </div>
+                                    <div>
+                                        <label style="display:block; margin-bottom:4px; font-weight:bold;">الوقت (من 1):</label>
+                                        <input type="number" min="0" max="1" step="0.5" id="g3_${key}" value="${evals.g3 !== undefined ? evals.g3 : ''}" style="width:100%; padding:8px; border-radius:8px; border:1px solid #ccc; font-family:'Tajawal';">
+                                    </div>
+                                </div>
+                                <button class="export-btn" style="padding:10px; font-size:0.9rem;" onclick="saveEvaluatorGrade('${key}')"><i class="fas fa-save"></i> حفظ تقييم المعلم الحالي</button>
+                            </div>
+                        </div>
+                    `;
+                });
+            });
         }
 
-        function saveStudentGrade(key) {
+        function saveEvaluatorGrade(key) {
+            let evaluator = document.getElementById('evaluatorSelect').value;
+            if(!evaluator) {
+                alert("يرجى اختيار اسم المعلم المقيم من القائمة أولاً!");
+                return;
+            }
+
             let v1 = parseFloat(document.getElementById('g1_' + key).value) || 0;
             let v2 = parseFloat(document.getElementById('g2_' + key).value) || 0;
             let v3 = parseFloat(document.getElementById('g3_' + key).value) || 0;
-            let total = v1 + v2 + v3;
 
             if(v1 > 2 || v2 > 2 || v3 > 1) {
                 alert("تأكد من الدرجات المدخلة بحيث لا تتجاوز الحد الأقصى لكل معيار!");
                 return;
             }
 
+            let sub = subs[key] || {};
+            let teachersEvals = sub.teachersEvals || {};
+            
+            // تخزين تقييم المعلم الحالي
+            teachersEvals[evaluator] = { g1: v1, g2: v2, g3: v3, total: v1 + v2 + v3 };
+
+            // حساب متوسط الدرجات من المعلمين الأربعة المقيمين وقسمتها على 4
+            let totalSum = 0;
+            let count = 0;
+            Object.keys(teachersEvals).forEach(t => {
+                totalSum += teachersEvals[t].total;
+                count++;
+            });
+
+            let finalAvg = count > 0 ? (totalSum / 4).toFixed(2) : 0; // القسمة على 4 حسب الطلب
+
             db.ref('submissions_fasaha/' + key).update({
-                g1: v1,
-                g2: v2,
-                g3: v3,
-                totalGrade: total
+                teachersEvals: teachersEvals,
+                finalGrade: parseFloat(finalAvg)
             }, err => {
                 if(!err) {
-                    showToast("تم حفظ تقييم الطالب بنجاح!");
+                    showToast("تم حفظ تقييم المعلم واحتساب المعدل النهائي بنجاح!");
                 } else {
-                    alert("حدث خطأ أثناء الحفظ");
+                    alert("حدث خطأ أثناء حفظ التقييم.");
                 }
             });
         }
 
-        // فرز وترتيب المراكز والأوائل تلقائياً في قسم الفرسان
+        // حساب المراكز وترتيب الطلاب في قسم الفرسان
         function updateGallery() {
             let gList = document.getElementById('gList');
             if(!gList) return;
@@ -769,22 +826,22 @@
 
             let gradedStudents = [];
             Object.keys(subs).forEach(k => {
-                if(subs[k] && subs[k].totalGrade !== undefined) {
+                if(subs[k] && subs[k].finalGrade !== undefined) {
                     gradedStudents.push(subs[k]);
                 }
             });
 
-            gradedStudents.sort((a, b) => b.totalGrade - a.totalGrade);
+            gradedStudents.sort((a, b) => b.finalGrade - a.finalGrade);
 
             if(gradedStudents.length === 0) {
-                gList.innerHTML = `<div class="info-card" style="text-align:center; color:#777;">لم يتم رصد درجات أو تقييمات للطلبة حتى الآن.</div>`;
+                gList.innerHTML = `<div class="info-card" style="text-align:center; color:#777;">لم يتم رصد درجات أو تقييمات نهائية للطلبة حتى الآن.</div>`;
                 return;
             }
 
             let html = `<div style="display:grid; gap:12px;">`;
             gradedStudents.forEach((item, index) => {
                 let badgeColor = index === 0 ? '#f1c40f' : (index === 1 ? '#bdc3c7' : (index === 2 ? '#e67e22' : '#3498db'));
-                let rankText = index === 0 ? '🥇 المركز الأول (فرسان الفصحى)' : (index === 1 ? '🥈 المركز الثاني (نجوم الإلقاء)' : (index === 2 ? '🥉 المركز الثالث (مبدعو الفصحى)' : `⭐ مركز متميز`));
+                let rankText = `المركز رقم ${index + 1}`;
 
                 html += `
                     <div style="background:white; padding:15px 20px; border-radius:15px; border-right:6px solid ${badgeColor}; box-shadow:var(--shadow); display:flex; justify-content:space-between; align-items:center;">
@@ -794,7 +851,7 @@
                         </div>
                         <div style="text-align:center;">
                             <span style="background:#fdf8e6; color:var(--accent); padding:6px 14px; border-radius:20px; font-weight:900; font-size:0.95rem; border:1px solid rgba(197,160,33,0.3);">
-                                ${item.totalGrade} / 5
+                                ${item.finalGrade} / 5
                             </span>
                             <div style="margin-top:6px;">
                                 <button class="btn-act btn-view" onclick="playModalVideo('${item.video}')" style="padding:4px 10px; font-size:0.75rem;"><i class="fas fa-play"></i> المشاهدة</button>
@@ -817,24 +874,52 @@
             document.getElementById('modalPlayer').pause();
         }
 
-        function exportCSV() {
-            let csv = "\uFEFFالاسم,الصف,السلامة اللغوية (2),لغة الجسد (2),الالتزام بالوقت (1),المجموع الكلي (5),حالة المشاركة\n";
+        function exportBasicCSV() {
+            let csv = "\uFEFFالاسم,الصف,حالة المشاركة\n";
             Object.keys(studentData).forEach(c => {
                 studentData[c].forEach(s => {
                     let key = c + "_" + s.replace(/[\.\#\$\[\]]/g, "_");
                     let sub = subs[key];
                     let status = sub ? "مشارك" : "غير مشارك";
-                    let g1 = sub && sub.g1 !== undefined ? sub.g1 : 0;
-                    let g2 = sub && sub.g2 !== undefined ? sub.g2 : 0;
-                    let g3 = sub && sub.g3 !== undefined ? sub.g3 : 0;
-                    let tot = sub && sub.totalGrade !== undefined ? sub.totalGrade : 0;
-                    csv += `"${s}","${c}",${g1},${g2},${g3},${tot},"${status}"\n`;
+                    csv += `"${s}","${c}","${status}"\n`;
                 });
             });
             let blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
             let link = document.createElement("a");
             link.href = URL.createObjectURL(blob);
-            link.download = "تقرير_تقييم_مبادرة_دقيقة_بلغتي.csv";
+            link.download = "تقرير_متابعة_المبادرة.csv";
+            link.click();
+        }
+
+        // تصدير ملف الإكسيل المطلوب بعنوان "تقييم مشاركات الطلبة في مبادرة دقيقة باللغة العربية الفصحى"
+        function exportGradingCSV() {
+            // تجميع الطلاب الحاصلين على درجات وترتيبهم لحساب المراكز بدقة
+            let allGraded = [];
+            Object.keys(studentData).forEach(c => {
+                studentData[c].forEach(s => {
+                    let key = c + "_" + s.replace(/[\.\#\$\[\]]/g, "_");
+                    let sub = subs[key];
+                    if(sub && sub.finalGrade !== undefined) {
+                        allGraded.push({ name: s, cls: c, grade: sub.finalGrade });
+                    }
+                });
+            });
+
+            allGraded.sort((a, b) => b.grade - a.grade);
+
+            let csv = "\uFEFFم,اسم الطالب,تقييمه,حساب المركز\n";
+            let serial = 1;
+
+            allGraded.forEach((item, index) => {
+                let rank = `المركز ${index + 1}`;
+                csv += `${serial},"${item.name}",${item.grade},"${rank}"\n`;
+                serial++;
+            });
+
+            let blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            let link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = "تقييم مشاركات الطلبة في مبادرة دقيقة باللغة العربية الفصحى.csv";
             link.click();
         }
     </script>
